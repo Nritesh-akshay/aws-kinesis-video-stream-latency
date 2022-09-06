@@ -1,4 +1,3 @@
-kvs_gstreamer_audio_video_sample.cpp. <<<<<<<<< this is NAME OF FILE 
 
 #include <gst/gst.h>
 #include <gst/app/gstappsink.h>
@@ -40,8 +39,8 @@ LOGGER_TAG("com.amazonaws.kinesis.video.gstreamer");
 #define DEFAULT_KMS_KEY_ID ""
 #define DEFAULT_STREAMING_TYPE STREAMING_TYPE_REALTIME
 #define DEFAULT_CONTENT_TYPE "video/h264,audio/aac"
-#define DEFAULT_MAX_LATENCY_SECONDS 60
-#define DEFAULT_FRAGMENT_DURATION_MILLISECONDS 2000
+#define DEFAULT_MAX_LATENCY_SECONDS 1
+#define DEFAULT_FRAGMENT_DURATION_MILLISECONDS 100
 #define DEFAULT_TIMECODE_SCALE_MILLISECONDS 1
 #define DEFAULT_KEY_FRAME_FRAGMENTATION TRUE
 #define DEFAULT_FRAME_TIMECODES TRUE
@@ -910,7 +909,8 @@ int gstreamer_init(int argc, char *argv[], CustomData &data) {
             g_object_set(G_OBJECT (h264enc), "periodicty-idr", 45, "inline-header", FALSE, NULL);
         } else {
             h264enc = gst_element_factory_make("x264enc", "h264enc");
-            g_object_set(G_OBJECT (h264enc), "bframes", 0, "key-int-max", 45, "bitrate", 512, NULL);
+
+            g_object_set(G_OBJECT (h264enc), "bframes", 0, "key-int-max", 25, "bitrate", 102, NULL);
             gst_util_set_object_arg(G_OBJECT (h264enc), "tune", "zerolatency");
         }
 
@@ -1163,3 +1163,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
